@@ -1,6 +1,8 @@
 # Kada London — landing page
 
-Award-tier marketing site for [Kada London](https://www.kadalondon.com) (Filipino Kitchen & Bar).
+Award-tier marketing site for **Kada London** (Filipino Kitchen & Bar).
+
+**Live (GitHub Pages):** https://ranneg.github.io/kada-london/
 
 ## Three signature animations
 
@@ -34,15 +36,21 @@ python -m http.server 8080 --directory _site
 
 **GitHub Actions** deploys to **GitHub Pages** on every push to `main`.
 
-1. Enable **Pages** in repo settings → Source: **GitHub Actions**
-2. Set custom domain **`www.kadalondon.com`** (CNAME written by `deploy.py` into `_site`)
-3. Point DNS at GitHub Pages (CNAME `www` → `<user>.github.io` or A records for apex)
+1. Repo **Settings → Pages → Build and deployment → Source:** **GitHub Actions**
+2. After the workflow succeeds, the site is at **https://ranneg.github.io/kada-london/**
 
-Manual build to a sibling site folder (optional):
+### Custom domain later
 
-```bash
-python deploy.py ../kada-london-site
+When you buy **kadalondon.com**, in repo **Settings → Pages → Custom domain** add `www.kadalondon.com`, point DNS at GitHub, then set the deploy secret/env:
+
+```yaml
+# .github/workflows/deploy.yml — add to the build job env:
+env:
+  PAGES_CNAME: www.kadalondon.com
+  PAGES_URL: https://www.kadalondon.com
 ```
+
+Until then, no CNAME file is written — the default `*.github.io` URL works as-is.
 
 ## Assets
 
