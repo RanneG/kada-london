@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kada London — Filipino Kitchen &amp; Bar</title>
+  <meta name="description" content="An immersive Filipino BBQ experience in London. Charcoal skewers, sizzling plates, ube cocktails — community warmth off the grill." />
+  <meta name="theme-color" content="#000000" />
+  <link rel="canonical" href="https://www.kadalondon.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Kada London" />
+  <meta property="og:title" content="Kada London — Filipino Kitchen &amp; Bar" />
+  <meta property="og:description" content="Skewers off the grill. Soups from home. Something special is coming to London." />
+  <meta property="og:url" content="https://www.kadalondon.com/" />
+  <meta property="og:image" content="https://www.kadalondon.com/assets/food-spread.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="assets/logo.svg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#story">Skip to content</a>
+
+  <svg class="grain" aria-hidden="true">
+    <filter id="grain-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="saturate" values="0" />
+    </filter>
+    <rect width="100%" height="100%" filter="url(#grain-filter)" />
+  </svg>
+
+  <span class="pageprogress" id="pageProgress" aria-hidden="true"></span>
+
+  <!-- ANIMATION 1 · Logo cinematic intro -->
+  <div class="intro" id="intro" aria-hidden="true">
+    <div class="intro__veil"></div>
+    <div class="intro__core">
+      <div class="intro__cluster" id="introCluster">
+        <div class="intro__ring" id="introRing" aria-hidden="true"></div>
+        <img class="intro__mark" src="assets/logo-mark.svg" width="220" height="auto" alt="" />
+        <span class="intro__city">London</span>
+        <span class="intro__count" id="introCount">0</span>
+        <span class="intro__label" id="introLabel">Warming the grill</span>
+      </div>
+    </div>
+  </div>
+
+  <header class="nav" id="nav">
+    <a class="nav__brand" href="#top">
+      <img class="logo logo--nav" src="assets/logo.svg" width="120" height="auto" alt="Kada London" />
+    </a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#cinema" data-hover-flip><span>Cinema</span></a>
+      <a href="#story" data-hover-flip><span>Story</span></a>
+      <a href="#menu" data-hover-flip><span>Menu</span></a>
+      <a href="#visit" data-hover-flip><span>Visit</span></a>
+    </nav>
+    <div class="nav__end">
+      <a class="nav__cta" href="https://www.instagram.com/kada_ldn/" target="_blank" rel="noopener noreferrer">@kada_ldn</a>
+      <button class="nav__burger" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <nav aria-label="Mobile">
+      <a href="#cinema">Cinema</a>
+      <a href="#story">Story</a>
+      <a href="#menu">Menu</a>
+      <a href="#visit">Visit</a>
+      <a href="https://www.instagram.com/kada_ldn/" target="_blank" rel="noopener noreferrer">Instagram</a>
+    </nav>
+  </div>
+
+  <main id="top">
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+      <div class="hero__media">
+        <video class="hero__video" id="heroVideo" muted loop playsinline autoplay preload="auto">
+          <source src="assets/reel-hero.mp4" type="video/mp4" />
+        </video>
+        <div class="hero__shade" aria-hidden="true"></div>
+      </div>
+      <div class="hero__content">
+        <div class="hero__brand reveal">
+          <img class="hero__mark" src="assets/logo-mark.svg" width="280" height="auto" alt="" />
+          <p class="hero__city">London</p>
+          <p class="hero__tag">Filipino Kitchen &amp; Bar</p>
+        </div>
+      </div>
+      <p class="hero__scroll-cue reveal" aria-hidden="true">
+        <span>Scroll to explore</span>
+        <span class="hero__scroll-line"></span>
+      </p>
+    </section>
+
+    <!-- ANIMATION 2 · Cinematic dual-reel (natural playback) -->
+    <section class="cinema" id="cinema">
+      <div class="cinema__scroll">
+        <div class="cinema__pin">
+          <div class="cinema__stage">
+            <img class="cinema__bg cinema__bg--a" src="assets/food-spread.jpg" alt="" aria-hidden="true" />
+            <img class="cinema__bg cinema__bg--b" src="assets/bar-interior.jpg" alt="" aria-hidden="true" />
+            <div class="cinema__frame">
+              <video class="cinema__video cinema__video--a" id="cinemaVideoA" muted playsinline preload="auto"
+                src="assets/reel-food.mp4"></video>
+              <video class="cinema__video cinema__video--b" id="cinemaVideoB" muted playsinline preload="auto"
+                src="assets/reel-restaurant.mp4"></video>
+            </div>
+            <div class="cinema__shade" aria-hidden="true"></div>
+          </div>
+          <div class="cinema__hud">
+            <span class="cinema__index" id="cinemaIndex">01</span>
+            <h2 class="cinema__title" id="cinemaTitle">Off the grill</h2>
+            <p class="cinema__text" id="cinemaText">Skewers brushed with smoke, char, and calamansi — street food lifted to the table.</p>
+            <div class="cinema__progress" aria-hidden="true">
+              <span class="cinema__progress-fill" id="cinemaProgress"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cinema__bridge" aria-hidden="true"></div>
+    </section>
+
+    <!-- Story -->
+    <section class="story" id="story">
+      <div class="story__layout">
+        <div class="story__visuals">
+          <figure class="story__photo story__photo--food">
+            <img src="assets/food-spread.jpg" alt="Sizzling sisig, lechon kawali, and BBQ skewers at Kada" loading="lazy" />
+            <figcaption>Sizzling sisig · Lechon kawali · Skewers</figcaption>
+          </figure>
+          <figure class="story__photo story__photo--bar">
+            <img src="assets/bar-interior.jpg" alt="The bar at Kada London" loading="lazy" />
+            <figcaption>The bar · Opening soon</figcaption>
+          </figure>
+        </div>
+        <div class="story__inner">
+          <p class="kicker">Community</p>
+          <h2 class="h2 story__headline">
+            <span class="story__line">Something special</span>
+            <span class="story__line">is coming home</span>
+          </h2>
+          <div class="story__grid">
+            <p class="story__copy reveal">Kada brings <em>Filipino BBQ</em> and neighbourhood warmth to London — a dining room that feels like everyone's already a regular.</p>
+            <p class="story__copy reveal">From <em>sinigang</em> and <em>bulalo</em> to belly, inasal, and ube coladas, every plate is built for passing, sharing, and going back for one more stick.</p>
+          </div>
+          <a class="story__reel" href="https://www.instagram.com/reel/C6RbKdnM3V-/" target="_blank" rel="noopener noreferrer">
+            <span>Watch the food reel</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section class="menu" id="menu">
+      <div class="menu__wrap">
+        <header class="menu__head">
+          <p class="kicker">The menu</p>
+          <h2 class="h2" data-split-words>The table</h2>
+          <p class="menu__note">Prices in GBP · Halal chicken options marked · Seasonal when noted</p>
+        </header>
+
+        <div class="menu__layout">
+          <nav class="menu__nav" id="menuNav" aria-label="Menu categories"></nav>
+          <div class="menu__body" id="menuBody"></div>
+          <figure class="menu__feature reveal" aria-hidden="true">
+            <img src="assets/food-spread.jpg" alt="" loading="lazy" />
+            <figcaption>From the grill</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signatures -->
+    <section class="signatures" id="drinks">
+      <div class="signatures__grid">
+        <div class="signatures__intro">
+          <p class="kicker">Signatures</p>
+          <h2 class="h2" data-split-words>Bar &amp; feast</h2>
+          <p class="signatures__lead reveal">Ube-forward cocktails, calamansi brightness, and the Pinoy Feast for the table.</p>
+        </div>
+        <div class="signatures__cards">
+          <article class="sig-card reveal">
+            <h3>Ube Colada</h3>
+            <p>Tanduay, coco, pineapple, ube &amp; lime</p>
+            <span>£12</span>
+          </article>
+          <article class="sig-card reveal">
+            <h3>Calamansi Mojito</h3>
+            <p>Tanduay, calamansi, mint &amp; soda</p>
+            <span>£12</span>
+          </article>
+          <article class="sig-card reveal">
+            <h3>Pinoy Feast</h3>
+            <p>Good for 2–3 · the full Kada spread</p>
+            <span>£75</span>
+          </article>
+          <article class="sig-card reveal">
+            <h3>BBQ Taster Platter</h3>
+            <p>Skewer spread · add inasal for £8</p>
+            <span>£30</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visit -->
+    <section class="visit" id="visit">
+      <img class="visit__logo logo reveal" src="assets/logo.svg" alt="" aria-hidden="true" />
+      <p class="kicker reveal">Opening soon</p>
+      <h2 class="h2 visit__title" data-split-words>London</h2>
+      <p class="visit__text reveal">Grand opening details and bookings are on the way. Follow for live updates from the kitchen and the grill.</p>
+      <div class="visit__actions reveal">
+        <a class="btn btn--primary" href="https://www.instagram.com/kada_ldn/" target="_blank" rel="noopener noreferrer">Follow @kada_ldn</a>
+        <a class="btn btn--ghost" href="https://www.instagram.com/reel/DUv2QQKiFa_/" target="_blank" rel="noopener noreferrer">Restaurant reel ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img class="logo logo--footer" src="assets/logo.svg" alt="Kada London" />
+    <div class="footer__links">
+      <a href="https://www.instagram.com/kada_ldn/" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="#menu">Menu</a>
+      <a href="https://www.kadalondon.com">kadalondon.com</a>
+    </div>
+    <p class="footer__copy">© 2026 Kada London. Filipino BBQ for the community.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
