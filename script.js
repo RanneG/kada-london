@@ -113,6 +113,27 @@ const CINEMA_BEATS = [
   { index: "03", title: "Come hungry", text: "Pinoy Feast for the crew. Ube colada for the toast. London, soon." },
 ];
 
+const THEMES = {
+  night: {
+    bg: "#000000",
+    fg: "#ffffff",
+    muted: "rgba(255,255,255,0.58)",
+    line: "rgba(255,255,255,0.12)",
+  },
+  ember: {
+    bg: "#0a0705",
+    fg: "#ffffff",
+    muted: "rgba(255,255,255,0.62)",
+    line: "rgba(232,93,36,0.2)",
+  },
+  paper: {
+    bg: "#f4f0ea",
+    fg: "#1a1410",
+    muted: "rgba(0,0,0,0.5)",
+    line: "rgba(0,0,0,0.1)",
+  },
+};
+
 /* ---------- text splitting ---------- */
 function splitWords(el) {
   const words = el.textContent.trim().split(/\s+/);
@@ -254,6 +275,87 @@ window.addEventListener("scroll", () => {
   nav?.classList.toggle("is-scrolled", window.scrollY > 40);
 }, { passive: true });
 
+/* ---------- theme morph ---------- */
+function applyTheme(name) {
+  const t = THEMES[name] || THEMES.night;
+  const root = document.documentElement;
+  root.style.setProperty("--bg", t.bg);
+  root.style.setProperty("--fg", t.fg);
+  root.style.setProperty("--muted", t.muted);
+  root.style.setProperty("--line", t.line);
+  document.body.classList.toggle("is-paper", name === "paper");
+  const navLogo = $(".logo--nav");
+  if (navLogo) {
+    navLogo.src = name === "paper" ? "assets/logo-dark.svg" : "assets/logo.svg";
+  }
+}
+
+function initThemes() {
+  if (!hasGsap || prefersReduced) return;
+
+  $$("[data-theme]").forEach((section) => {
+    const theme = section.dataset.theme;
+    if (!THEMES[theme]) return;
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 55%",
+      end: "bottom 45%",
+      onEnter: () => applyTheme(theme),
+      onEnterBack: () => applyTheme(theme),
+    });
+  });
+}
+
+/* ---------- custom cursor ---------- */
+function initCursor() {
+  if (isTouch || prefersReduced) return;
+  const cursor = $("#cursor");
+  if (!cursor) return;
+
+  let x = 0;
+  let y = 0;
+  let tx = 0;
+  let ty = 0;
+
+  document.addEventListener("mousemove", (e) => {
+    x = e.clientX;
+    y = e.clientY;
+    cursor.classList.add("is-active");
+  });
+  document.addEventListener("mouseleave", () => cursor.classList.remove("is-active"));
+
+  const hoverables = "a, button, .menu__nav-btn, .sig-card, .story__photo";
+  document.querySelectorAll(hoverables).forEach((el) => {
+    el.addEventListener("mouseenter", () => cursor.classList.add("is-hover"));
+    el.addEventListener("mouseleave", () => cursor.classList.remove("is-hover"));
+  });
+
+  gsap.ticker.add(() => {
+    tx += (x - tx) * 0.18;
+    ty += (y - ty) * 0.18;
+    gsap.set(cursor, { x: tx, y: ty });
+  });
+}
+
+/* ---------- menu curtain wipe ---------- */
+function initMenuCurtain() {
+  if (!hasGsap || prefersReduced) return;
+  const curtain = $("#menuCurtain");
+  const menu = $("#menu");
+  if (!curtain || !menu) return;
+
+  gsap.to(curtain, {
+    "--scale": 1,
+    ease: "none",
+    scrollTrigger: {
+      trigger: menu,
+      start: "top 95%",
+      end: "top 48%",
+      scrub: 0.55,
+    },
+  });
+}
+
 /* ---------- video helpers ---------- */
 function primeVideo(video) {
   if (!video) return Promise.resolve();
@@ -363,13 +465,24 @@ function initCinema() {
   };
 
   let reelBStarted = false;
+  let lastBeat = -1;
 
   const updateCopy = (p) => {
     const beat = p < 0.45 ? 0 : p < 0.78 ? 1 : 2;
     const beatData = CINEMA_BEATS[beat];
     if (els.indexEl) els.indexEl.textContent = beatData.index;
     if (els.textEl) els.textEl.textContent = beatData.text;
-    if (els.titleEl) els.titleEl.textContent = beatData.title;
+    if (els.titleEl && beat !== lastBeat) {
+      lastBeat = beat;
+      gsap.fromTo(
+        els.titleEl,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.55, ease: EASE },
+      );
+      els.titleEl.textContent = beatData.title;
+    } else if (els.titleEl) {
+      els.titleEl.textContent = beatData.title;
+    }
     if (els.progressEl) els.progressEl.style.width = `${p * 100}%`;
   };
 
@@ -496,6 +609,11 @@ function initReveals() {
         scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none reverse" },
       },
     );
+    gsap.to(el.querySelector("img"), {
+      y: -24,
+      ease: "none",
+      scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.8 },
+    });
   });
 
   ScrollTrigger.refresh();
@@ -504,6 +622,9 @@ function initReveals() {
 function initExperience() {
   initCinema();
   initMenu();
+  initThemes();
+  initMenuCurtain();
+  initCursor();
   initReveals();
 }
 

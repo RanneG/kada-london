@@ -4,6 +4,10 @@ Award-tier marketing site for **Kada London** (Filipino Kitchen & Bar).
 
 **Live (GitHub Pages):** https://ranneg.github.io/kada-london/
 
+## v2 — Smoke & Ember
+
+Editorial direction: **street grill → the table**. Instrument Serif + DM Sans, ember accent, scroll-driven palette morph (night → paper menu), asymmetric cinema split, menu curtain wipe, custom cursor (desktop).
+
 ## Three signature animations
 
 1. **Logo cinematic intro** — progress ring, counter, curtain wipe into hero

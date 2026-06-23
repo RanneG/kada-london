@@ -20,7 +20,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -36,6 +36,7 @@
   </svg>
 
   <span class="pageprogress" id="pageProgress" aria-hidden="true"></span>
+  <div class="cursor" id="cursor" aria-hidden="true"><span class="cursor__ring"></span></div>
 
   <!-- ANIMATION 1 · Logo cinematic intro -->
   <div class="intro" id="intro" aria-hidden="true">
@@ -82,7 +83,7 @@
   <main id="top">
 
     <!-- Hero -->
-    <section class="hero" id="hero">
+    <section class="hero" id="hero" data-theme="night">
       <div class="hero__media">
         <video class="hero__video" id="heroVideo" muted loop playsinline autoplay preload="auto">
           <source src="assets/reel-hero.mp4" type="video/mp4" />
@@ -102,36 +103,42 @@
       </p>
     </section>
 
-    <!-- ANIMATION 2 · Cinematic dual-reel (natural playback) -->
-    <section class="cinema" id="cinema">
+    <!-- ANIMATION 2 · Cinematic dual-reel -->
+    <section class="cinema" id="cinema" data-theme="ember">
       <div class="cinema__scroll">
         <div class="cinema__pin">
           <div class="cinema__stage">
             <img class="cinema__bg cinema__bg--a" src="assets/food-spread.jpg" alt="" aria-hidden="true" />
             <img class="cinema__bg cinema__bg--b" src="assets/bar-interior.jpg" alt="" aria-hidden="true" />
-            <div class="cinema__frame">
-              <video class="cinema__video cinema__video--a" id="cinemaVideoA" muted playsinline preload="auto"
-                src="assets/reel-food.mp4"></video>
-              <video class="cinema__video cinema__video--b" id="cinemaVideoB" muted playsinline preload="auto"
-                src="assets/reel-restaurant.mp4"></video>
-            </div>
+            <div class="cinema__smoke" aria-hidden="true"></div>
             <div class="cinema__shade" aria-hidden="true"></div>
           </div>
-          <div class="cinema__hud">
-            <span class="cinema__index" id="cinemaIndex">01</span>
-            <h2 class="cinema__title" id="cinemaTitle">Off the grill</h2>
-            <p class="cinema__text" id="cinemaText">Skewers brushed with smoke, char, and calamansi — street food lifted to the table.</p>
-            <div class="cinema__progress" aria-hidden="true">
-              <span class="cinema__progress-fill" id="cinemaProgress"></span>
+          <div class="cinema__layout">
+            <div class="cinema__reel">
+              <div class="cinema__reel-mask">
+                <video class="cinema__video cinema__video--a" id="cinemaVideoA" muted playsinline preload="auto"
+                  src="assets/reel-food.mp4"></video>
+                <video class="cinema__video cinema__video--b" id="cinemaVideoB" muted playsinline preload="auto"
+                  src="assets/reel-restaurant.mp4"></video>
+              </div>
+              <span class="cinema__reel-label">@kada_ldn</span>
+            </div>
+            <div class="cinema__hud">
+              <span class="cinema__index" id="cinemaIndex">01</span>
+              <div class="cinema__rule" aria-hidden="true"></div>
+              <h2 class="cinema__title" id="cinemaTitle">Off the grill</h2>
+              <p class="cinema__text" id="cinemaText">Skewers brushed with smoke, char, and calamansi — street food lifted to the table.</p>
+              <div class="cinema__progress" aria-hidden="true">
+                <span class="cinema__progress-fill" id="cinemaProgress"></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="cinema__bridge" aria-hidden="true"></div>
     </section>
 
     <!-- Story -->
-    <section class="story" id="story">
+    <section class="story" id="story" data-theme="night">
       <div class="story__layout">
         <div class="story__visuals">
           <figure class="story__photo story__photo--food">
@@ -146,7 +153,7 @@
         <div class="story__inner">
           <p class="kicker">Community</p>
           <h2 class="h2 story__headline">
-            <span class="story__line">Something special</span>
+            <span class="story__line">Something <em>special</em></span>
             <span class="story__line">is coming home</span>
           </h2>
           <div class="story__grid">
@@ -162,7 +169,8 @@
     </section>
 
     <!-- Menu -->
-    <section class="menu" id="menu">
+    <div class="menu-curtain" id="menuCurtain" aria-hidden="true"></div>
+    <section class="menu" id="menu" data-theme="paper">
       <div class="menu__wrap">
         <header class="menu__head">
           <p class="kicker">The menu</p>
@@ -174,15 +182,15 @@
           <nav class="menu__nav" id="menuNav" aria-label="Menu categories"></nav>
           <div class="menu__body" id="menuBody"></div>
           <figure class="menu__feature reveal" aria-hidden="true">
-            <img src="assets/food-spread.jpg" alt="" loading="lazy" />
-            <figcaption>From the grill</figcaption>
+            <img src="assets/bar-interior.jpg" alt="" loading="lazy" />
+            <figcaption>At the bar</figcaption>
           </figure>
         </div>
       </div>
     </section>
 
     <!-- Signatures -->
-    <section class="signatures" id="drinks">
+    <section class="signatures" id="drinks" data-theme="night">
       <div class="signatures__grid">
         <div class="signatures__intro">
           <p class="kicker">Signatures</p>
@@ -215,7 +223,7 @@
     </section>
 
     <!-- Visit -->
-    <section class="visit" id="visit">
+    <section class="visit" id="visit" data-theme="night">
       <img class="visit__logo logo reveal" src="assets/logo.svg" alt="" aria-hidden="true" />
       <p class="kicker reveal">Opening soon</p>
       <h2 class="h2 visit__title" data-split-words>London</h2>
