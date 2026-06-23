@@ -13,9 +13,10 @@
   <meta property="og:title" content="Kada London — Filipino Kitchen &amp; Bar" />
   <meta property="og:description" content="Skewers off the grill. Soups from home. Something special is coming to London." />
   <meta property="og:url" content="https://www.kadalondon.com/" />
-  <meta property="og:image" content="https://www.kadalondon.com/assets/food-spread.jpg" />
+  <meta property="og:image" content="https://www.kadalondon.com/assets/dish-lechon-kawali.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <link rel="preload" as="image" href="assets/dish-lechon-kawali.png" />
   <link rel="icon" href="assets/logo.svg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -85,7 +86,8 @@
     <!-- Hero -->
     <section class="hero" id="hero" data-theme="night">
       <div class="hero__media">
-        <video class="hero__video" id="heroVideo" muted loop playsinline autoplay preload="auto">
+        <video class="hero__video" id="heroVideo" muted loop playsinline autoplay preload="auto"
+          poster="assets/dish-lechon-kawali.png">
           <source src="assets/reel-hero.mp4" type="video/mp4" />
         </video>
         <div class="hero__shade" aria-hidden="true"></div>
@@ -108,8 +110,8 @@
       <div class="cinema__scroll">
         <div class="cinema__pin">
           <div class="cinema__stage">
-            <img class="cinema__bg cinema__bg--a" src="assets/food-spread.jpg" alt="" aria-hidden="true" />
-            <img class="cinema__bg cinema__bg--b" src="assets/bar-interior.jpg" alt="" aria-hidden="true" />
+            <img class="cinema__bg cinema__bg--a" src="assets/dish-lechon-kawali.png" alt="" aria-hidden="true" />
+            <img class="cinema__bg cinema__bg--b" src="assets/dish-pancit.png" alt="" aria-hidden="true" />
             <div class="cinema__smoke" aria-hidden="true"></div>
             <div class="cinema__shade" aria-hidden="true"></div>
           </div>
@@ -140,14 +142,34 @@
     <!-- Story -->
     <section class="story" id="story" data-theme="night">
       <div class="story__layout">
-        <div class="story__visuals">
-          <figure class="story__photo story__photo--food">
-            <img src="assets/food-spread.jpg" alt="Sizzling sisig, lechon kawali, and BBQ skewers at Kada" loading="lazy" />
-            <figcaption>Sizzling sisig · Lechon kawali · Skewers</figcaption>
+        <div class="story__mosaic">
+          <figure class="story__plate story__plate--hero">
+            <img src="assets/dish-lechon-kawali.png" alt="Crispy lechon kawali with dipping sauce on banana leaf" loading="lazy" width="800" height="1000" />
+            <figcaption>
+              <span class="story__plate-tag">Kada favs</span>
+              Lechon kawali
+            </figcaption>
           </figure>
-          <figure class="story__photo story__photo--bar">
-            <img src="assets/bar-interior.jpg" alt="The bar at Kada London" loading="lazy" />
-            <figcaption>The bar · Opening soon</figcaption>
+          <figure class="story__plate">
+            <img src="assets/dish-tapsilog.png" alt="Tapsilog with garlic rice, fried egg, and atchara" loading="lazy" width="600" height="750" />
+            <figcaption>
+              <span class="story__plate-tag">Silog</span>
+              Garlic rice &amp; egg
+            </figcaption>
+          </figure>
+          <figure class="story__plate">
+            <img src="assets/dish-pancit.png" alt="Pancit canton with lechon kawali and fish balls" loading="lazy" width="600" height="750" />
+            <figcaption>
+              <span class="story__plate-tag">Noodles</span>
+              Pancit canton
+            </figcaption>
+          </figure>
+          <figure class="story__plate story__plate--accent">
+            <img src="assets/dish-ube.png" alt="Ube dessert with ice cream and coconut" loading="lazy" width="600" height="750" />
+            <figcaption>
+              <span class="story__plate-tag">Dessert</span>
+              Ube &amp; coconut
+            </figcaption>
           </figure>
         </div>
         <div class="story__inner">
@@ -182,8 +204,8 @@
           <nav class="menu__nav" id="menuNav" aria-label="Menu categories"></nav>
           <div class="menu__body" id="menuBody"></div>
           <figure class="menu__feature reveal" aria-hidden="true">
-            <img src="assets/bar-interior.jpg" alt="" loading="lazy" />
-            <figcaption>At the bar</figcaption>
+            <img src="assets/dish-lechon-kawali.png" alt="" loading="lazy" />
+            <figcaption>Lechon kawali · Off the pass</figcaption>
           </figure>
         </div>
       </div>
@@ -198,25 +220,37 @@
           <p class="signatures__lead reveal">Ube-forward cocktails, calamansi brightness, and the Pinoy Feast for the table.</p>
         </div>
         <div class="signatures__cards">
-          <article class="sig-card reveal">
-            <h3>Ube Colada</h3>
-            <p>Tanduay, coco, pineapple, ube &amp; lime</p>
-            <span>£12</span>
+          <article class="sig-card sig-card--plate reveal">
+            <img class="sig-card__img" src="assets/dish-ube.png" alt="" loading="lazy" />
+            <div class="sig-card__body">
+              <h3>Ube Colada</h3>
+              <p>Tanduay, coco, pineapple, ube &amp; lime</p>
+              <span>£12</span>
+            </div>
           </article>
-          <article class="sig-card reveal">
-            <h3>Calamansi Mojito</h3>
-            <p>Tanduay, calamansi, mint &amp; soda</p>
-            <span>£12</span>
+          <article class="sig-card sig-card--plate reveal">
+            <img class="sig-card__img" src="assets/dish-lechon-kawali.png" alt="" loading="lazy" />
+            <div class="sig-card__body">
+              <h3>Pinoy Feast</h3>
+              <p>Good for 2–3 · the full Kada spread</p>
+              <span>£75</span>
+            </div>
           </article>
-          <article class="sig-card reveal">
-            <h3>Pinoy Feast</h3>
-            <p>Good for 2–3 · the full Kada spread</p>
-            <span>£75</span>
+          <article class="sig-card sig-card--plate reveal">
+            <img class="sig-card__img" src="assets/dish-pancit.png" alt="" loading="lazy" />
+            <div class="sig-card__body">
+              <h3>BBQ Taster Platter</h3>
+              <p>Skewer spread · add inasal for £8</p>
+              <span>£30</span>
+            </div>
           </article>
-          <article class="sig-card reveal">
-            <h3>BBQ Taster Platter</h3>
-            <p>Skewer spread · add inasal for £8</p>
-            <span>£30</span>
+          <article class="sig-card sig-card--plate reveal">
+            <img class="sig-card__img" src="assets/dish-tapsilog.png" alt="" loading="lazy" />
+            <div class="sig-card__body">
+              <h3>Calamansi Mojito</h3>
+              <p>Tanduay, calamansi, mint &amp; soda</p>
+              <span>£12</span>
+            </div>
           </article>
         </div>
       </div>

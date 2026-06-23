@@ -71,8 +71,12 @@ Until then, no CNAME file is written — the default `*.github.io` URL works as-
 
 ## Assets
 
-| File | Source |
-|------|--------|
+| File | Use |
+|------|-----|
+| `dish-lechon-kawali.png` | Hero poster, cinema BG, story mosaic, menu feature, signatures |
+| `dish-tapsilog.png` | Story mosaic, signatures |
+| `dish-pancit.png` | Cinema BG, story mosaic, signatures |
+| `dish-ube.png` | Story mosaic, signatures, menu sidebar (desserts/drinks) |
 | `reel-hero.mp4` | [Instagram reel](https://www.instagram.com/reel/DZDNeHINiXT/) |
 | `reel-food.mp4` | [Instagram reel](https://www.instagram.com/reel/C6RbKdnM3V-/) |
 | `reel-restaurant.mp4` | [Instagram reel](https://www.instagram.com/reel/DUv2QQKiFa_/) |

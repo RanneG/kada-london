@@ -158,6 +158,15 @@ $$("[data-hover-flip] > span").forEach((s) => s.parentElement.setAttribute("data
 /* ---------- build menu ---------- */
 const MENU_COLS = new Set(["favs", "skewers", "sharing", "drinks"]);
 
+const MENU_FEATURE_IMAGES = {
+  soups: { src: "assets/dish-tapsilog.png", caption: "Soups & silog · From the pass" },
+  favs: { src: "assets/dish-lechon-kawali.png", caption: "Lechon kawali · Kada favs" },
+  skewers: { src: "assets/dish-lechon-kawali.png", caption: "Off the grill · Skewers" },
+  sharing: { src: "assets/dish-pancit.png", caption: "Pancit canton · Sharing" },
+  desserts: { src: "assets/dish-ube.png", caption: "Ube & coconut · Dessert" },
+  drinks: { src: "assets/dish-ube.png", caption: "Ube colada · At the bar" },
+};
+
 function buildMenu() {
   const nav = $("#menuNav");
   const body = $("#menuBody");
@@ -228,6 +237,32 @@ function initMenu() {
       b.classList.toggle("is-active", on);
       b.setAttribute("aria-current", on ? "true" : "false");
     });
+    const feature = $(".menu__feature img");
+    const featureCap = $(".menu__feature figcaption");
+    const data = MENU_FEATURE_IMAGES[id];
+    if (feature && data) {
+      const current = feature.getAttribute("src") || "";
+      if (!current.endsWith(data.src)) {
+        const swap = () => {
+          feature.src = data.src;
+          if (featureCap) featureCap.textContent = data.caption;
+        };
+        if (hasGsap && !prefersReduced) {
+          gsap.to(feature, {
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => {
+              swap();
+              gsap.to(feature, { opacity: 1, duration: 0.35 });
+            },
+          });
+        } else {
+          swap();
+        }
+      } else if (featureCap) {
+        featureCap.textContent = data.caption;
+      }
+    }
   }
 }
 
@@ -324,7 +359,7 @@ function initCursor() {
   });
   document.addEventListener("mouseleave", () => cursor.classList.remove("is-active"));
 
-  const hoverables = "a, button, .menu__nav-btn, .sig-card, .story__photo";
+  const hoverables = "a, button, .menu__nav-btn, .sig-card, .story__plate";
   document.querySelectorAll(hoverables).forEach((el) => {
     el.addEventListener("mouseenter", () => cursor.classList.add("is-hover"));
     el.addEventListener("mouseleave", () => cursor.classList.remove("is-hover"));
@@ -573,7 +608,7 @@ function initReveals() {
   });
 
   gsap.utils.toArray(".reveal").forEach((el) => {
-    if (el.closest(".hero") || el.closest(".cinema") || el.classList.contains("story__photo")) return;
+    if (el.closest(".hero") || el.closest(".cinema") || el.classList.contains("story__plate")) return;
     gsap.to(el, {
       opacity: 1, y: 0, duration: DURATION.base, ease: EASE,
       scrollTrigger: { trigger: el, start: "top 88%", toggleActions: "play none none reverse" },
@@ -597,22 +632,25 @@ function initReveals() {
     });
   });
 
-  gsap.utils.toArray(".story__photo").forEach((el) => {
+  gsap.utils.toArray(".story__plate").forEach((el, i) => {
     gsap.fromTo(
       el,
-      { opacity: 0, y: 40 },
+      { opacity: 0, y: 48 },
       {
         opacity: 1,
         y: 0,
         duration: DURATION.slow,
+        delay: i * 0.08,
         ease: EASE,
-        scrollTrigger: { trigger: el, start: "top 90%", toggleActions: "play none none reverse" },
+        scrollTrigger: { trigger: el.closest(".story__mosaic") || el, start: "top 88%", toggleActions: "play none none reverse" },
       },
     );
-    gsap.to(el.querySelector("img"), {
-      y: -24,
+    const img = el.querySelector("img");
+    if (!img) return;
+    gsap.to(img, {
+      y: i % 2 === 0 ? -20 : -12,
       ease: "none",
-      scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.8 },
+      scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: 0.85 },
     });
   });
 
