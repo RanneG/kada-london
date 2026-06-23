@@ -1,4 +1,7 @@
 _site/
+.lighthouse-tmp/
+lighthouse-*.json
+_parse_lh.py
 .DS_Store
 Thumbs.db
 *.pyc

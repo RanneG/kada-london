@@ -12,7 +12,9 @@ Editorial direction: **street grill → the table**. Instrument Serif + DM Sans,
 
 1. **Logo cinematic intro** — progress ring, counter, curtain wipe into hero
 2. **Dual-reel cinema** — pinned fullscreen section; food + restaurant Instagram reels crossfade on scroll
-3. **Sticky category menu** — vertical scroll with side nav (desktop) or filter chips (mobile)
+3. **Sticky category menu** — vertical scroll with side nav; **plate stack** syncs to the category you're reading
+
+See **[docs/PERFORMANCE.md](docs/PERFORMANCE.md)** for Lighthouse audit + optimization notes.
 
 ## Stack
 
@@ -73,6 +75,7 @@ Until then, no CNAME file is written — the default `*.github.io` URL works as-
 
 | File | Source |
 |------|--------|
+| `dish-*.png` | Studio food plates — menu pass window only |
 | `reel-hero.mp4` | [Instagram reel](https://www.instagram.com/reel/DZDNeHINiXT/) |
 | `reel-food.mp4` | [Instagram reel](https://www.instagram.com/reel/C6RbKdnM3V-/) |
 | `reel-restaurant.mp4` | [Instagram reel](https://www.instagram.com/reel/DUv2QQKiFa_/) |

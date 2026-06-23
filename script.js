@@ -158,6 +158,214 @@ $$("[data-hover-flip] > span").forEach((s) => s.parentElement.setAttribute("data
 /* ---------- build menu ---------- */
 const MENU_COLS = new Set(["favs", "skewers", "sharing", "drinks"]);
 
+const MENU_PLATES = [
+  {
+    id: "lechon",
+    src: "assets/dish-lechon-kawali.png",
+    dish: "Lechon kawali",
+    note: "Crispy skin · Sarsa",
+    focus: "center 42%",
+  },
+  {
+    id: "tapsilog",
+    src: "assets/dish-tapsilog.png",
+    dish: "Tapsilog",
+    note: "Garlic rice · Atchara",
+    focus: "center 38%",
+  },
+  {
+    id: "pancit",
+    src: "assets/dish-pancit.png",
+    dish: "Pancit canton",
+    note: "Noodles · To share",
+    focus: "center 48%",
+  },
+  {
+    id: "ube",
+    src: "assets/dish-ube.png",
+    dish: "Ube dessert",
+    note: "Coconut · Ice cream",
+    focus: "center 40%",
+  },
+];
+
+const PLATE_JUMP_TARGETS = ["soups", "favs", "sharing", "desserts"];
+
+const PLATE_CATEGORIES = ["soups", "favs", "sharing", "desserts"];
+
+let activePlateIndex = 0;
+let menuPlateScrollBound = false;
+
+function isMenuInView() {
+  const menu = $("#menu");
+  if (!menu) return false;
+  const rect = menu.getBoundingClientRect();
+  return rect.bottom > window.innerHeight * 0.12 && rect.top < window.innerHeight * 0.88;
+}
+
+function getActivePlateIndex() {
+  if (!isMenuInView()) return 0;
+
+  const mid = window.innerHeight * 0.46;
+  let bestIdx = 0;
+  let bestDist = Infinity;
+
+  PLATE_CATEGORIES.forEach((catId, plateIdx) => {
+    const el = document.getElementById(`menu-${catId}`);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const center = rect.top + rect.height * 0.35;
+    const dist = Math.abs(center - mid);
+    if (dist < bestDist) {
+      bestDist = dist;
+      bestIdx = plateIdx;
+    }
+  });
+
+  return bestIdx;
+}
+
+function plateScaleAt(progress, i, n) {
+  const targetScale = Math.max(0.78, 1 - (n - i - 1) * 0.08);
+  const rangeStart = i / n;
+  if (progress <= rangeStart) return 1;
+  const t = (progress - rangeStart) / (1 - rangeStart);
+  return 1 + t * (targetScale - 1);
+}
+
+function renderPlatesFromProgress(progress) {
+  const wraps = $$(".menu__plate-wrap");
+  if (!wraps.length) return;
+
+  const n = MENU_PLATES.length;
+  const clamped = Math.min(1, Math.max(0, progress));
+  const front = Math.min(n - 1, Math.max(0, Math.round(clamped * (n - 1))));
+
+  if (front !== activePlateIndex) {
+    activePlateIndex = front;
+    updatePlateUI(front);
+  }
+
+  wraps.forEach((wrap, i) => {
+    const card = wrap.querySelector(".menu__plate");
+    if (!card) return;
+
+    const scale = plateScaleAt(clamped, i, n);
+    const behind = front - i;
+    let y = 0;
+    let opacity = 1;
+
+    if (behind > 0) {
+      y = -behind * 12;
+      opacity = Math.max(0.45, 1 - behind * 0.18);
+    } else if (i > front) {
+      y = 28;
+      opacity = 0;
+    }
+
+    if (hasGsap && !prefersReduced) {
+      gsap.set(wrap, { zIndex: i + 1 });
+      gsap.set(card, { scale, y, opacity, force3D: true });
+    } else {
+      card.style.opacity = String(opacity);
+      card.style.transform = `translateY(${y}px) scale(${scale})`;
+    }
+  });
+}
+
+function syncMenuPlates() {
+  const index = getActivePlateIndex();
+  const n = MENU_PLATES.length;
+  const progress = isMenuInView() ? (index + 0.5) / n : 0;
+  renderPlatesFromProgress(progress);
+}
+
+function bindMenuPlateScroll() {
+  if (menuPlateScrollBound) return;
+  menuPlateScrollBound = true;
+
+  const tick = () => syncMenuPlates();
+
+  if (lenis) lenis.on("scroll", tick);
+  window.addEventListener("scroll", tick, { passive: true });
+  tick();
+}
+
+function initMenuVisual() {
+  if (!$("#menuVisualSticky")) return;
+  bindMenuPlateScroll();
+}
+
+function updatePlateUI(index) {
+  const countEl = $("#menuVisualCount");
+  const noteEl = $("#menuPlateNote");
+  const n = MENU_PLATES.length;
+
+  if (countEl) countEl.textContent = `${String(index + 1).padStart(2, "0")} / ${String(n).padStart(2, "0")}`;
+  if (noteEl) noteEl.textContent = MENU_PLATES[index].note;
+
+  $$(".menu__plate-dot").forEach((dot, i) => {
+    const on = i === index;
+    dot.classList.toggle("is-active", on);
+    dot.setAttribute("aria-selected", on ? "true" : "false");
+  });
+
+  $$(".menu__plate-wrap").forEach((wrap, i) => {
+    wrap.classList.toggle("is-front", i === index);
+  });
+}
+
+function menuVisualHTML() {
+  return `
+    <header class="menu__visual-head">
+      <span class="menu__visual-label">From the pass</span>
+      <span class="menu__visual-count" id="menuVisualCount">01 / 04</span>
+    </header>
+    <p class="menu__visual-hint">Plates match the menu section you're reading</p>
+    <div class="menu__plate-stage" id="menuPlateStage">
+      ${MENU_PLATES.map((plate, i) => `
+        <div class="menu__plate-wrap" data-index="${i}" style="--i: ${i}">
+          <article class="menu__plate" data-plate="${plate.id}">
+            <img src="${plate.src}" alt="${plate.dish}" loading="lazy"
+              style="object-position: ${plate.focus}" />
+            <div class="menu__plate-cap">
+              <span class="menu__plate-num">${String(i + 1).padStart(2, "0")}</span>
+              <span class="menu__plate-name">${plate.dish}</span>
+            </div>
+          </article>
+        </div>
+      `).join("")}
+    </div>
+    <p class="menu__plate-note" id="menuPlateNote">${MENU_PLATES[0].note}</p>
+    <div class="menu__plate-dots" id="menuPlateDots" role="tablist" aria-label="Dish highlights"></div>
+  `;
+}
+
+function buildMenuVisual() {
+  const sticky = $("#menuVisualSticky");
+  if (!sticky) return;
+
+  sticky.innerHTML = `<div class="menu__visual-inner reveal">${menuVisualHTML()}</div>`;
+
+  const dots = $("#menuPlateDots");
+  if (dots) {
+    dots.innerHTML = MENU_PLATES.map((plate, i) => `
+      <button class="menu__plate-dot${i === 0 ? " is-active" : ""}" type="button" role="tab"
+        data-i="${i}" aria-label="${plate.dish}" aria-selected="${i === 0 ? "true" : "false"}"></button>
+    `).join("");
+
+    $$(".menu__plate-dot", dots).forEach((dot) => {
+      dot.addEventListener("click", () => {
+        const i = Number(dot.dataset.i);
+        const target = document.getElementById(`menu-${PLATE_JUMP_TARGETS[i]}`);
+        if (!target) return;
+        if (lenis) lenis.scrollTo(target, { offset: -96, duration: 1.1 });
+        else target.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
+      });
+    });
+  }
+}
+
 function buildMenu() {
   const nav = $("#menuNav");
   const body = $("#menuBody");
@@ -190,6 +398,7 @@ function buildMenu() {
 }
 
 buildMenu();
+buildMenuVisual();
 
 function initMenu() {
   const nav = $("#menuNav");
@@ -197,14 +406,19 @@ function initMenu() {
   const categories = $$(".menu__category");
   if (!nav || !buttons.length) return;
 
+  function setActiveNav(id) {
+    buttons.forEach((b) => {
+      const on = b.dataset.target === id;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-current", on ? "true" : "false");
+    });
+  }
+
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const target = document.getElementById(`menu-${btn.dataset.target}`);
       if (!target) return;
-      buttons.forEach((b) => {
-        b.classList.toggle("is-active", b === btn);
-        b.setAttribute("aria-current", b === btn ? "true" : "false");
-      });
+      setActiveNav(btn.dataset.target);
       if (lenis) lenis.scrollTo(target, { offset: -96, duration: 1.2 });
       else target.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "start" });
     });
@@ -221,14 +435,6 @@ function initMenu() {
       onEnterBack: () => setActiveNav(cat.dataset.category),
     });
   });
-
-  function setActiveNav(id) {
-    buttons.forEach((b) => {
-      const on = b.dataset.target === id;
-      b.classList.toggle("is-active", on);
-      b.setAttribute("aria-current", on ? "true" : "false");
-    });
-  }
 }
 
 /* ---------- mobile nav ---------- */
@@ -357,6 +563,20 @@ function initMenuCurtain() {
 }
 
 /* ---------- video helpers ---------- */
+function attachVideoSource(video) {
+  if (!video || video.dataset.hydrated === "1") return;
+  const src = video.dataset.src;
+  if (!src) return;
+  video.src = src;
+  video.dataset.hydrated = "1";
+}
+
+function loadVideo(video) {
+  if (!video) return Promise.resolve();
+  attachVideoSource(video);
+  return primeVideo(video);
+}
+
 function primeVideo(video) {
   if (!video) return Promise.resolve();
   video.muted = true;
@@ -391,7 +611,7 @@ function runIntro() {
   if (!intro || prefersReduced || !hasGsap) {
     intro?.remove();
     nav?.classList.add("is-visible");
-    heroVideo?.play().catch(() => {});
+    loadVideo(heroVideo).then(() => heroVideo?.play().catch(() => {}));
     initExperience();
     return;
   }
@@ -401,7 +621,7 @@ function runIntro() {
       onComplete: () => {
         intro.remove();
         nav?.classList.add("is-visible");
-        heroVideo?.play().catch(() => {});
+        loadVideo(heroVideo).then(() => heroVideo?.play().catch(() => {}));
         initExperience();
       },
     });
@@ -427,6 +647,7 @@ function runIntro() {
     const step = Math.min(INTRO_STEPS.length - 1, Math.floor(progress / 34));
     if (labelEl) labelEl.textContent = INTRO_STEPS[step];
     if (progress < 100) {
+      if (progress > 34 && heroVideo?.dataset.hydrated !== "1") loadVideo(heroVideo);
       setTimeout(tickCount, 70 + Math.random() * 60);
     } else {
       const wait = Math.max(0, minDuration - (performance.now() - start));
@@ -495,70 +716,87 @@ function initCinema() {
   };
 
   const pin = $(".cinema__pin");
+  let cinemaArmed = false;
 
-  Promise.all([primeVideo(videoA), primeVideo(videoB)]).then(() => {
-    setReel("a");
-    updateCopy(0);
+  function armCinema() {
+    if (cinemaArmed) return;
+    cinemaArmed = true;
 
-    ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: "+=2600",
-      pin: ".cinema__pin",
-      anticipatePin: 1,
-      invalidateOnRefresh: true,
-      onEnter: () => {
-        reelBStarted = false;
-        videoB.pause();
-        videoA.currentTime = 0;
-        setReel("a");
-        playCinemaVideo(videoA);
-        if (pin) pin.style.opacity = "1";
-      },
-      onEnterBack: () => {
-        reelBStarted = false;
-        videoB.pause();
-        videoA.currentTime = 0;
-        setReel("a");
-        playCinemaVideo(videoA);
-        if (pin) pin.style.opacity = "1";
-      },
-      onLeave: () => pauseCinemaVideos(videoA, videoB),
-      onLeaveBack: () => pauseCinemaVideos(videoA, videoB),
-      onUpdate: (self) => {
-        const p = self.progress;
-        updateCopy(p);
+    Promise.all([loadVideo(videoA), loadVideo(videoB)]).then(() => {
+      setReel("a");
+      updateCopy(0);
 
-        if (pin) {
-          const fade = p > 0.82 ? Math.max(0, 1 - (p - 0.82) / 0.18) : 1;
-          pin.style.opacity = String(fade);
-        }
-
-        if (p < 0.4) {
-          setReel("a");
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "+=2600",
+        pin: ".cinema__pin",
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onEnter: () => {
           reelBStarted = false;
-        } else if (p < 0.55) {
-          const t = (p - 0.4) / 0.15;
-          videoA.style.opacity = String(1 - t);
-          videoB.style.opacity = String(t);
-          if (bgA) bgA.style.opacity = String(1 - t * 0.85);
-          if (bgB) bgB.style.opacity = String(t * 0.85);
-          if (!reelBStarted && t > 0.12) {
-            reelBStarted = true;
-            videoB.currentTime = 0;
-            playCinemaVideo(videoB);
+          videoB.pause();
+          videoA.currentTime = 0;
+          setReel("a");
+          playCinemaVideo(videoA);
+          if (pin) pin.style.opacity = "1";
+        },
+        onEnterBack: () => {
+          reelBStarted = false;
+          videoB.pause();
+          videoA.currentTime = 0;
+          setReel("a");
+          playCinemaVideo(videoA);
+          if (pin) pin.style.opacity = "1";
+        },
+        onLeave: () => pauseCinemaVideos(videoA, videoB),
+        onLeaveBack: () => pauseCinemaVideos(videoA, videoB),
+        onUpdate: (self) => {
+          const p = self.progress;
+          updateCopy(p);
+
+          if (pin) {
+            const fade = p > 0.82 ? Math.max(0, 1 - (p - 0.82) / 0.18) : 1;
+            pin.style.opacity = String(fade);
           }
-        } else {
-          setReel("b");
-          if (!reelBStarted) {
-            reelBStarted = true;
-            videoB.currentTime = 0;
-            playCinemaVideo(videoB);
+
+          if (p < 0.4) {
+            setReel("a");
+            reelBStarted = false;
+          } else if (p < 0.55) {
+            const t = (p - 0.4) / 0.15;
+            videoA.style.opacity = String(1 - t);
+            videoB.style.opacity = String(t);
+            if (bgA) bgA.style.opacity = String(1 - t * 0.85);
+            if (bgB) bgB.style.opacity = String(t * 0.85);
+            if (!reelBStarted && t > 0.12) {
+              reelBStarted = true;
+              videoB.currentTime = 0;
+              playCinemaVideo(videoB);
+            }
+          } else {
+            setReel("b");
+            if (!reelBStarted) {
+              reelBStarted = true;
+              videoB.currentTime = 0;
+              playCinemaVideo(videoB);
+            }
           }
-        }
-      },
+        },
+      });
     });
+  }
+
+  ScrollTrigger.create({
+    trigger: section,
+    start: "top bottom+=300",
+    once: true,
+    onEnter: armCinema,
   });
+
+  if (section.getBoundingClientRect().top < window.innerHeight + 300) {
+    armCinema();
+  }
 }
 
 /* ---------- ANIMATION 3 · removed — menu is vertical scroll ---------- */
@@ -626,6 +864,7 @@ function initExperience() {
   initMenuCurtain();
   initCursor();
   initReveals();
+  initMenuVisual();
 }
 
 /* ---------- reduced motion ---------- */
@@ -633,10 +872,13 @@ if (prefersReduced || !hasGsap) {
   $("#intro")?.remove();
   nav?.classList.add("is-visible");
   $$(".reveal").forEach((el) => { el.style.opacity = 1; el.style.transform = "none"; });
-  $("#heroVideo")?.play().catch(() => {});
+  loadVideo($("#heroVideo")).then(() => $("#heroVideo")?.play().catch(() => {}));
   initExperience();
 } else {
   runIntro();
 }
 
-window.addEventListener("load", () => ScrollTrigger?.refresh());
+window.addEventListener("load", () => {
+  ScrollTrigger?.refresh();
+  syncMenuPlates();
+});

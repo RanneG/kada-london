@@ -18,10 +18,25 @@
 
   <link rel="icon" href="assets/logo.svg" />
 
+  <link rel="preload" as="image" href="assets/food-spread.jpg" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "name": "Kada London",
+    "description": "Filipino kitchen and bar in London — charcoal skewers, sizzling plates, and ube cocktails.",
+    "url": "https://www.kadalondon.com/",
+    "image": "https://www.kadalondon.com/assets/food-spread.jpg",
+    "servesCuisine": "Filipino",
+    "priceRange": "££",
+    "sameAs": ["https://www.instagram.com/kada_ldn/"]
+  }
+  </script>
 </head>
 <body>
 
@@ -85,9 +100,8 @@
     <!-- Hero -->
     <section class="hero" id="hero" data-theme="night">
       <div class="hero__media">
-        <video class="hero__video" id="heroVideo" muted loop playsinline autoplay preload="auto">
-          <source src="assets/reel-hero.mp4" type="video/mp4" />
-        </video>
+        <video class="hero__video" id="heroVideo" muted loop playsinline preload="none"
+          poster="assets/food-spread.jpg" data-src="assets/reel-hero.mp4" aria-label="Kada kitchen reel"></video>
         <div class="hero__shade" aria-hidden="true"></div>
       </div>
       <div class="hero__content">
@@ -108,18 +122,18 @@
       <div class="cinema__scroll">
         <div class="cinema__pin">
           <div class="cinema__stage">
-            <img class="cinema__bg cinema__bg--a" src="assets/food-spread.jpg" alt="" aria-hidden="true" />
-            <img class="cinema__bg cinema__bg--b" src="assets/bar-interior.jpg" alt="" aria-hidden="true" />
+            <img class="cinema__bg cinema__bg--a" src="assets/food-spread.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+            <img class="cinema__bg cinema__bg--b" src="assets/bar-interior.jpg" alt="" aria-hidden="true" loading="lazy" decoding="async" />
             <div class="cinema__smoke" aria-hidden="true"></div>
             <div class="cinema__shade" aria-hidden="true"></div>
           </div>
           <div class="cinema__layout">
             <div class="cinema__reel">
               <div class="cinema__reel-mask">
-                <video class="cinema__video cinema__video--a" id="cinemaVideoA" muted playsinline preload="auto"
-                  src="assets/reel-food.mp4"></video>
-                <video class="cinema__video cinema__video--b" id="cinemaVideoB" muted playsinline preload="auto"
-                  src="assets/reel-restaurant.mp4"></video>
+                <video class="cinema__video cinema__video--a" id="cinemaVideoA" muted playsinline preload="none"
+                  poster="assets/food-spread.jpg" data-src="assets/reel-food.mp4"></video>
+                <video class="cinema__video cinema__video--b" id="cinemaVideoB" muted playsinline preload="none"
+                  poster="assets/bar-interior.jpg" data-src="assets/reel-restaurant.mp4"></video>
               </div>
               <span class="cinema__reel-label">@kada_ldn</span>
             </div>
@@ -173,18 +187,21 @@
     <section class="menu" id="menu" data-theme="paper">
       <div class="menu__wrap">
         <header class="menu__head">
-          <p class="kicker">The menu</p>
-          <h2 class="h2" data-split-words>The table</h2>
-          <p class="menu__note">Prices in GBP · Halal chicken options marked · Seasonal when noted</p>
+          <div class="menu__head-copy">
+            <p class="kicker">The menu</p>
+            <h2 class="h2" data-split-words>The table</h2>
+            <p class="menu__note">Prices in GBP · Halal chicken options marked · Seasonal when noted</p>
+          </div>
         </header>
 
-        <div class="menu__layout">
-          <nav class="menu__nav" id="menuNav" aria-label="Menu categories"></nav>
-          <div class="menu__body" id="menuBody"></div>
-          <figure class="menu__feature reveal" aria-hidden="true">
-            <img src="assets/bar-interior.jpg" alt="" loading="lazy" />
-            <figcaption>At the bar</figcaption>
-          </figure>
+        <div class="menu__shell" id="menuShell">
+          <aside class="menu__rail">
+            <nav class="menu__nav" id="menuNav" aria-label="Menu categories"></nav>
+          </aside>
+          <div class="menu__sheet" id="menuBody"></div>
+          <aside class="menu__visual" id="menuVisual" aria-label="Featured dishes from the pass">
+            <div class="menu__visual-sticky" id="menuVisualSticky"></div>
+          </aside>
         </div>
       </div>
     </section>
@@ -245,9 +262,9 @@
     <p class="footer__copy">© 2026 Kada London. Filipino BBQ for the community.</p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-  <script src="script.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+  <script defer src="script.js"></script>
 </body>
 </html>
